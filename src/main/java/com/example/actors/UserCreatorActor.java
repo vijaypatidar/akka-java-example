@@ -40,7 +40,7 @@ public class UserCreatorActor extends AbstractBehavior<UserCreatorActor.User> {
     }
 
 
-    public static Behavior<User> create(){
+    public static Behavior<UserCreatorActor.User> create(){
         return Behaviors.setup(UserCreatorActor::new);
     }
 

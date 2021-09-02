@@ -1,4 +1,4 @@
-package com.example.actors;
+package com.example.actors.notifier;
 
 import akka.actor.typed.ActorSystem;
 
@@ -6,10 +6,13 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        final ActorSystem<UserCreatorActor.User> userActorSystem = ActorSystem.create(UserCreatorActor.create(), "userCreator");
+        final ActorSystem<NotifyActionActor.NotifyAction> actionActorSystem = ActorSystem.create(NotifyActionActor.create(), "Notify");
 
-        userActorSystem.tell(new UserCreatorActor.Student("Vijay"));
-        userActorSystem.tell(new UserCreatorActor.Admin("Ram"));
+        actionActorSystem.tell(new NotifyActionActor.NotifyAction(
+                "Vijay",
+                "vijay@example.com",
+                "12345678"
+        ));
 
         try {
             System.out.println("Press any key to exit");
@@ -18,7 +21,7 @@ public class Main {
             e.printStackTrace();
         } finally {
             System.out.println("Actor system terminated");
-            userActorSystem.terminate();
+            actionActorSystem.terminate();
         }
 
     }
