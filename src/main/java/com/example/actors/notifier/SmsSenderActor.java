@@ -3,7 +3,6 @@ package com.example.actors.notifier;
 import akka.actor.typed.Behavior;
 import akka.actor.typed.javadsl.AbstractBehavior;
 import akka.actor.typed.javadsl.ActorContext;
-import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 
 public class SmsSenderActor extends AbstractBehavior<NotifyActionActor.NotifyAction> {
@@ -15,12 +14,12 @@ public class SmsSenderActor extends AbstractBehavior<NotifyActionActor.NotifyAct
     @Override
     public Receive<NotifyActionActor.NotifyAction> createReceive() {
         return newReceiveBuilder()
-                .onMessage(NotifyActionActor.NotifyAction.class,this::sendSms)
+                .onMessage(NotifyActionActor.NotifyAction.class, this::sendSms)
                 .build();
     }
 
     private Behavior<NotifyActionActor.NotifyAction> sendSms(NotifyActionActor.NotifyAction notification) {
-        getContext().getLog().info("Sms sent to : "+notification.getPhone());
+        getContext().getLog().info("Sms sent to : " + notification.getPhone());
         return this;
     }
 }

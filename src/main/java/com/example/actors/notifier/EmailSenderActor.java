@@ -14,12 +14,13 @@ public class EmailSenderActor extends AbstractBehavior<NotifyActionActor.NotifyA
     @Override
     public Receive<NotifyActionActor.NotifyAction> createReceive() {
         return newReceiveBuilder()
-                .onMessage(NotifyActionActor.NotifyAction.class,this::sendEmail)
+                .onMessage(NotifyActionActor.NotifyAction.class, this::sendEmail)
                 .build();
     }
 
     private Behavior<NotifyActionActor.NotifyAction> sendEmail(NotifyActionActor.NotifyAction notification) {
-        getContext().getLog().info("Email sent to : "+notification.getEmail());
+        getContext().getLog().info("Email sent to : " + notification.getEmail());
+        //code for sending actual mail
         return this;
     }
 }
