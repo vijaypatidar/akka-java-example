@@ -2,6 +2,7 @@ package com.example.actors.ask;
 
 import akka.actor.typed.ActorRef;
 import akka.actor.typed.Behavior;
+import akka.actor.typed.SupervisorStrategy;
 import akka.actor.typed.javadsl.AbstractBehavior;
 import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
@@ -14,7 +15,8 @@ public class AccountCreatorActor extends AbstractBehavior<AccountCreatorActor.Co
     }
 
     public static Behavior<Command> create(){
-        return Behaviors.setup(AccountCreatorActor::new);
+        return Behaviors.supervise(Behaviors.setup(AccountCreatorActor::new))
+                .onFailure(IllegalArgumentException.class, SupervisorStrategy.restart());
     }
 
     public interface Command {
@@ -58,8 +60,12 @@ public class AccountCreatorActor extends AbstractBehavior<AccountCreatorActor.Co
     }
 
     private Behavior<Command> handleRequest(RequestCommand req) {
-        System.out.println(req.getName()+" account created");
-        req.getReplyTo().tell(new Reply("Hey! " + req.getName() + " your account is created successfully"));
+        if (req.getName().length()!=0){
+            ///
+            req.getReplyTo().tell(new Reply("Hey! " + req.getName() + " your account is created successfully"));
+        }else{
+            throw new IllegalArgumentException("Invalid username");
+        }
         return this;
     }
 
